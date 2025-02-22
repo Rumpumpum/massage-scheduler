@@ -4,7 +4,7 @@ const initData = window.Telegram.WebApp.initDataUnsafe;
 const userId = initData?.user?.id;
 
 const masseurs = {
-    "952232290": "Анна",    // Замените ВАШ_ID на ваш Telegram ID (например, "123456789")
+    "952232290": "Анна",
     "7778239709": "Игорь",
     "6698523521": "Мария"
 };
