@@ -2,11 +2,9 @@ Telegram.WebApp.ready();
 let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
 let selectedDate = null;
 
-// Установка текущей даты по умолчанию
 const today = new Date().toISOString().split("T")[0];
 document.getElementById("selectedDate").value = today;
 
-// Загрузка дня при запуске
 loadDay();
 
 function loadDay() {
