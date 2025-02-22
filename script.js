@@ -5,8 +5,8 @@ const userId = initData?.user?.id;
 
 const masseurs = {
     "952232290": "Анна",    // Замените ВАШ_ID на ваш Telegram ID (например, "123456789")
-    "1": "Игорь",
-    "3": "Мария"
+    "7778239709": "Игорь",
+    "6698523521": "Мария"
 };
 const currentMasseur = masseurs[userId] || null;
 if (!currentMasseur) {
