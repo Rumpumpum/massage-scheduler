@@ -7,12 +7,11 @@ document.getElementById("time").setAttribute("max", today + "T23:59");
 
 function addNewAppointment() {
   const clientName = document.getElementById("clientName").value;
-  const clientPhone = document.getElementById("clientPhone").value;
   const serviceDescription = document.getElementById("serviceDescription").value;
   const cost = parseInt(document.getElementById("cost").value);
   const timeInput = document.getElementById("time").value;
 
-  if (!clientName || !clientPhone || !serviceDescription || !cost || !timeInput) {
+  if (!clientName || !serviceDescription || !cost || !timeInput) {
     Telegram.WebApp.showAlert("Заполните все поля!");
     return;
   }
@@ -21,7 +20,6 @@ function addNewAppointment() {
   const appointment = {
     id: Date.now(),
     clientName,
-    clientPhone,
     serviceDescription,
     cost,
     time,
@@ -36,7 +34,6 @@ function addNewAppointment() {
 
 function clearForm() {
   document.getElementById("clientName").value = "";
-  document.getElementById("clientPhone").value = "";
   document.getElementById("serviceDescription").value = "";
   document.getElementById("cost").value = "";
   document.getElementById("time").value = "";
