@@ -3,9 +3,9 @@ const initData = window.Telegram.WebApp.initDataUnsafe;
 const userId = initData?.user?.id;
 
 const masseurs = {
-    "ВАШ_ID": "Анна",    // Ваш Telegram ID
-    "987654321": "Игорь",
-    "456789123": "Мария"
+    "952232290": "Анна",
+    "7778239709": "Игорь",
+    "6698523521": "Мария"
 };
 const currentMasseur = masseurs[userId] || null;
 if (!currentMasseur) {
