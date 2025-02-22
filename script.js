@@ -6,6 +6,9 @@ let selectedDate = null;
 const today = new Date().toISOString().split("T")[0];
 document.getElementById("selectedDate").value = today;
 
+// Загрузка дня при запуске
+loadDay();
+
 function loadDay() {
   selectedDate = document.getElementById("selectedDate").value;
   if (!selectedDate) {
@@ -69,14 +72,14 @@ function updateAppointmentsList() {
 
 function toggleCompleted(id) {
   const app = appointments.find(a => a.id === id);
-  app.completed = !app.completed; // Отмена при повторном нажатии
+  app.completed = !app.completed;
   localStorage.setItem("appointments", JSON.stringify(appointments));
   updateAppointmentsList();
 }
 
 function togglePaid(id) {
   const app = appointments.find(a => a.id === id);
-  app.paid = !app.paid; // Отмена при повторном нажатии
+  app.paid = !app.paid;
   localStorage.setItem("appointments", JSON.stringify(appointments));
   updateAppointmentsList();
 }
@@ -87,7 +90,7 @@ function editAppointment(id) {
   document.getElementById("serviceDescription").value = app.serviceDescription;
   document.getElementById("cost").value = app.cost;
   document.getElementById("time").value = app.time.split(" ")[1];
-  deleteAppointment(id); // Удаляем старую запись, чтобы добавить обновленную через "Добавить"
+  deleteAppointment(id);
   Telegram.WebApp.showAlert("Измените данные и нажмите 'Добавить'");
 }
 
@@ -130,6 +133,3 @@ function showPeriodEarnings() {
   const earnings = periodAppointments.reduce((sum, app) => sum + app.cost, 0);
   Telegram.WebApp.showAlert(`Доход с ${startDate} по ${endDate}: ${earnings} руб.`);
 }
-
-// Инициализация
-loadDay();
