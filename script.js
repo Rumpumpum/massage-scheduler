@@ -1,30 +1,32 @@
-// script.js (объединённый)
-// Код из auth.js
+// script.js (объединённый файл)
 window.Telegram.WebApp.ready();
 const initData = window.Telegram.WebApp.initDataUnsafe;
 const userId = initData?.user?.id;
+
 const masseurs = {
-    "952232290": "Анна",    // Ваш Telegram ID
-    "0": "Игорь",
-    "0": "Мария"
+    "952232290": "Анна",    // Замените ВАШ_ID на ваш Telegram ID (например, "123456789")
+    "1": "Игорь",
+    "3": "Мария"
 };
 const currentMasseur = masseurs[userId] || null;
 if (!currentMasseur) {
     window.Telegram.WebApp.showAlert("У вас нет доступа к управлению записями.");
 }
 
-// Код из bookings.js
 let bookings = {};
 const workHours = Array.from({ length: 10 }, (_, i) => `${i + 9}:00`);
+
 function getMasseurBookings(date, masseur) {
     return bookings[date]?.[masseur] || [];
 }
+
 function bookSlot(date, masseur, hour) {
     if (!bookings[date]) bookings[date] = {};
     if (!bookings[date][masseur]) bookings[date][masseur] = [];
     bookings[date][masseur].push(hour);
     window.Telegram.WebApp.showAlert(`Записано: ${hour}, ${date}`);
 }
+
 function removeSlot(date, masseur, hour) {
     if (bookings[date]?.[masseur]) {
         bookings[date][masseur] = bookings[date][masseur].filter(h => h !== hour);
@@ -34,7 +36,6 @@ function removeSlot(date, masseur, hour) {
     }
 }
 
-// Код из script.js
 function generateCalendar() {
     const calendar = document.getElementById("calendar");
     const today = new Date();
