@@ -1,6 +1,9 @@
 Telegram.WebApp.ready();
-let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+let appointments = [];
 let selectedDate = null;
+
+const SERVER_URL = 'https://massage-scheduler-server.onrender.com'; // Замените на ваш URL сервера Render
+const userId = Telegram.WebApp.initDataUnsafe.user?.id; // Получаем Telegram ID пользователя
 
 const today = new Date().toISOString().split("T")[0];
 document.getElementById("selectedDate").value = today;
@@ -16,10 +19,18 @@ function loadDay() {
   document.getElementById("dayContent").style.display = "block";
   document.getElementById("time").setAttribute("min", "00:00");
   document.getElementById("time").setAttribute("max", "23:59");
+  fetchAppointments();
+}
+
+async function fetchAppointments() {
+  const response = await fetch(`${SERVER_URL}/appointments`, {
+    headers: { 'X-Telegram-User-ID': userId }
+  });
+  appointments = await response.json();
   updateAppointmentsList();
 }
 
-function addNewAppointment() {
+async function addNewAppointment() {
   const clientName = document.getElementById("clientName").value;
   const serviceDescription = document.getElementById("serviceDescription").value;
   const cost = parseInt(document.getElementById("cost").value);
@@ -40,10 +51,20 @@ function addNewAppointment() {
     completed: false,
     paid: false
   };
-  appointments.push(appointment);
-  localStorage.setItem("appointments", JSON.stringify(appointments));
-  updateAppointmentsList();
-  clearForm();
+
+  const response = await fetch(`${SERVER_URL}/appointments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Telegram-User-ID': userId
+    },
+    body: JSON.stringify(appointment)
+  });
+
+  if (response.ok) {
+    fetchAppointments();
+    clearForm();
+  }
 }
 
 function clearForm() {
@@ -68,18 +89,32 @@ function updateAppointmentsList() {
   ).join("");
 }
 
-function toggleCompleted(id) {
+async function toggleCompleted(id) {
   const app = appointments.find(a => a.id === id);
   app.completed = !app.completed;
-  localStorage.setItem("appointments", JSON.stringify(appointments));
-  updateAppointmentsList();
+  await fetch(`${SERVER_URL}/appointments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Telegram-User-ID': userId
+    },
+    body: JSON.stringify(app)
+  });
+  fetchAppointments();
 }
 
-function togglePaid(id) {
+async function togglePaid(id) {
   const app = appointments.find(a => a.id === id);
   app.paid = !app.paid;
-  localStorage.setItem("appointments", JSON.stringify(appointments));
-  updateAppointmentsList();
+  await fetch(`${SERVER_URL}/appointments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-Telegram-User-ID': userId
+    },
+    body: JSON.stringify(app)
+  });
+  fetchAppointments();
 }
 
 function editAppointment(id) {
@@ -92,10 +127,12 @@ function editAppointment(id) {
   Telegram.WebApp.showAlert("Измените данные и нажмите 'Добавить'");
 }
 
-function deleteAppointment(id) {
-  appointments = appointments.filter(a => a.id !== id);
-  localStorage.setItem("appointments", JSON.stringify(appointments));
-  updateAppointmentsList();
+async function deleteAppointment(id) {
+  await fetch(`${SERVER_URL}/appointments/${id}`, {
+    method: 'DELETE',
+    headers: { 'X-Telegram-User-ID': userId }
+  });
+  fetchAppointments();
 }
 
 function showDailyEarnings() {
