@@ -7,14 +7,20 @@
 </head>
 <body>
   <div>
-    <input id="clientName" placeholder="Имя клиента">
-    <input id="serviceDescription" placeholder="Услуга">
-    <input id="cost" type="number" placeholder="Стоимость (руб)">
-    <input id="time" type="time" step="600">
-    <button onclick="addNewAppointment()">Добавить</button>
+    <input id="selectedDate" type="date">
+    <button onclick="loadDay()">Показать день</button>
   </div>
-  <div id="appointments"></div>
-  <button onclick="showDailyEarnings()">Итоги дня</button>
+  <div id="dayContent" style="display: none;">
+    <div>
+      <input id="clientName" placeholder="Имя клиента">
+      <input id="serviceDescription" placeholder="Услуга">
+      <input id="cost" type="number" placeholder="Стоимость (руб)">
+      <input id="time" type="time" step="600">
+      <button onclick="addNewAppointment()">Добавить</button>
+    </div>
+    <div id="appointments"></div>
+    <button onclick="showDailyEarnings()">Итоги дня</button>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>
