@@ -6,12 +6,12 @@ export function initializeAuth() {
 
     const masseurs = {
         "952232290": "Анна",    // Замените "ВАШ_ID" на ваш Telegram ID (число, например, "123456789")
-        "987654321": "Игорь",
-        "456789123": "Мария"
+        "0": "Игорь",
+        "1": "Мария"
     };
 
     const currentMasseur = masseurs[userId] || null;
-    if (!952232290) {
+    if (!currentMasseur) {
         window.Telegram.WebApp.showAlert("У вас нет доступа к управлению записями.");
     }
 
