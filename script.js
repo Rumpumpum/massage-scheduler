@@ -1,39 +1,48 @@
-// script.js (объединённый файл)
 window.Telegram.WebApp.ready();
 const initData = window.Telegram.WebApp.initDataUnsafe;
 const userId = initData?.user?.id;
 
 const masseurs = {
-    "952232290": "Анна",
-    "7778239709": "Игорь",
-    "6698523521": "Мария"
+    "ВАШ_ID": "Анна",    // Ваш Telegram ID
+    "987654321": "Игорь",
+    "456789123": "Мария"
 };
 const currentMasseur = masseurs[userId] || null;
 if (!currentMasseur) {
     window.Telegram.WebApp.showAlert("У вас нет доступа к управлению записями.");
 }
 
-let bookings = {};
 const workHours = Array.from({ length: 10 }, (_, i) => `${i + 9}:00`);
+let bookings = {};
 
-function getMasseurBookings(date, masseur) {
-    return bookings[date]?.[masseur] || [];
+// Загрузка данных с сервера
+async function loadBookings() {
+    const response = await fetch('https://massage-scheduler-server.onrender.com/bookings');
+    bookings = await response.json();
 }
 
-function bookSlot(date, masseur, hour) {
-    if (!bookings[date]) bookings[date] = {};
-    if (!bookings[date][masseur]) bookings[date][masseur] = [];
-    bookings[date][masseur].push(hour);
+async function bookSlot(date, masseur, hour) {
+    await fetch('https://massage-scheduler-server.onrender.com/book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, masseur, hour })
+    });
+    await loadBookings();
     window.Telegram.WebApp.showAlert(`Записано: ${hour}, ${date}`);
 }
 
-function removeSlot(date, masseur, hour) {
-    if (bookings[date]?.[masseur]) {
-        bookings[date][masseur] = bookings[date][masseur].filter(h => h !== hour);
-        if (bookings[date][masseur].length === 0) delete bookings[date][masseur];
-        if (Object.keys(bookings[date]).length === 0) delete bookings[date];
-        window.Telegram.WebApp.showAlert(`Удалено: ${hour}, ${date}`);
-    }
+async function removeSlot(date, masseur, hour) {
+    await fetch('https://massage-scheduler-server.onrender.com/remove', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, masseur, hour })
+    });
+    await loadBookings();
+    window.Telegram.WebApp.showAlert(`Удалено: ${hour}, ${date}`);
+}
+
+function getMasseurBookings(date, masseur) {
+    return bookings[date]?.[masseur] || [];
 }
 
 function generateCalendar() {
@@ -53,7 +62,7 @@ function generateCalendar() {
     }
 }
 
-function showSchedule(year, month, day) {
+async function showSchedule(year, month, day) {
     if (!currentMasseur) return;
 
     const date = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
@@ -73,13 +82,13 @@ function showSchedule(year, month, day) {
         slot.textContent = `${hour} - ${isBusy ? "Занято" : "Свободно"}`;
 
         if (!isBusy) {
-            slot.addEventListener("click", () => {
-                bookSlot(date, currentMasseur, hour);
+            slot.addEventListener("click", async () => {
+                await bookSlot(date, currentMasseur, hour);
                 showSchedule(year, month, day);
             });
         } else {
-            slot.addEventListener("click", () => {
-                removeSlot(date, currentMasseur, hour);
+            slot.addEventListener("click", async () => {
+                await removeSlot(date, masseur, hour);
                 showSchedule(year, month, day);
             });
         }
@@ -92,4 +101,5 @@ document.getElementById("back-to-calendar").addEventListener("click", () => {
     document.getElementById("calendar").style.display = "grid";
 });
 
-generateCalendar();
+// Инициализация с загрузкой данных
+loadBookings().then(() => generateCalendar());
