@@ -5,7 +5,7 @@ console.log("User ID:", userId);
 
 const masseurs = {
     "952232290": "Анна",    // Ваш Telegram ID
-    "7778239709": "Игорь",
+    "1266878423": "Игорь",
     "6698523521": "Мария"
 };
 const currentMasseur = masseurs[userId] || null;
