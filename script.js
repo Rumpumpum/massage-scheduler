@@ -1,9 +1,22 @@
 Telegram.WebApp.ready();
 let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+let selectedDate = null;
 
+// Установка текущей даты по умолчанию
 const today = new Date().toISOString().split("T")[0];
-document.getElementById("time").setAttribute("min", today + "T00:00");
-document.getElementById("time").setAttribute("max", today + "T23:59");
+document.getElementById("selectedDate").value = today;
+
+function loadDay() {
+  selectedDate = document.getElementById("selectedDate").value;
+  if (!selectedDate) {
+    Telegram.WebApp.showAlert("Выберите дату!");
+    return;
+  }
+  document.getElementById("dayContent").style.display = "block";
+  document.getElementById("time").setAttribute("min", "00:00");
+  document.getElementById("time").setAttribute("max", "23:59");
+  updateAppointmentsList();
+}
 
 function addNewAppointment() {
   const clientName = document.getElementById("clientName").value;
@@ -16,7 +29,7 @@ function addNewAppointment() {
     return;
   }
 
-  const time = `${today} ${timeInput}`;
+  const time = `${selectedDate} ${timeInput}`;
   const appointment = {
     id: Date.now(),
     clientName,
@@ -40,8 +53,10 @@ function clearForm() {
 }
 
 function updateAppointmentsList() {
+  if (!selectedDate) return;
   const list = document.getElementById("appointments");
-  list.innerHTML = appointments.map(app => 
+  const dayAppointments = appointments.filter(app => app.time.startsWith(selectedDate));
+  list.innerHTML = dayAppointments.map(app => 
     `<div>
       ${app.clientName} - ${app.serviceDescription} - ${app.cost} руб - ${app.time.split(" ")[1]}
       <button onclick="markCompleted(${app.id})">${app.completed ? "✅" : "Выполнено"}</button>
@@ -65,11 +80,16 @@ function markPaid(id) {
 }
 
 function showDailyEarnings() {
-  const today = new Date().toISOString().split("T")[0];
-  const earnings = appointments
-    .filter(app => app.time.startsWith(today) && app.completed && app.paid)
-    .reduce((sum, app) => sum + app.cost, 0);
-  Telegram.WebApp.showAlert(`Заработок за день: ${earnings} руб.`);
+  if (!selectedDate) {
+    Telegram.WebApp.showAlert("Выберите дату!");
+    return;
+  }
+  const dayAppointments = appointments.filter(app => 
+    app.time.startsWith(selectedDate) && app.completed && app.paid
+  );
+  const earnings = dayAppointments.reduce((sum, app) => sum + app.cost, 0);
+  Telegram.WebApp.showAlert(`Заработок за ${selectedDate}: ${earnings} руб.`);
 }
 
-updateAppointmentsList();
+// Инициализация
+loadDay();
