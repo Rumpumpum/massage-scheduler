@@ -1,29 +1,99 @@
+/* Общие стили */
 body {
-  font-family: Arial, sans-serif;
-  padding: 10px;
+  font-family: -apple-system, SF Pro Text, Arial, sans-serif; /* Шрифт iOS */
+  background-color: #f2f2f7; /* Светло-серый фон, как в iOS */
+  margin: 0;
+  padding: 20px;
+  color: #1c2526;
 }
+
+/* Контейнеры */
+div {
+  margin-bottom: 20px;
+}
+
+/* Поля ввода */
 input {
-  margin: 5px;
-  padding: 5px;
+  display: block;
+  width: calc(100% - 20px); /* Учитываем padding */
+  padding: 10px;
+  margin: 8px 0;
+  border: 1px solid #d1d1d6;
+  border-radius: 10px; /* Закругленные углы */
+  font-size: 16px;
+  background-color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease-in-out;
 }
+
+input:focus {
+  border-color: #007aff; /* Синий акцент iOS */
+  outline: none;
+}
+
+/* Кнопки */
 button {
-  padding: 5px 10px;
-  margin: 2px;
-}
-#appointments div {
-  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 10px 20px;
   margin: 5px;
-  padding: 5px;
+  border: none;
+  border-radius: 10px;
+  background-color: #007aff; /* Основной цвет кнопок iOS */
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease-in-out;
+}
+
+button:hover, button:active {
+  background-color: #005bb5; /* Темнее при нажатии */
+}
+
+/* Список записей */
+#appointments div {
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 15px;
+  margin: 8px 0;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Легкая тень */
   display: flex;
-  align-items: center;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
 }
+
 #appointments button {
-  margin-left: 5px;
+  padding: 6px 12px;
+  font-size: 14px;
+  background-color: #e0e0e6; /* Серый для второстепенных кнопок */
+  color: #1c2526;
 }
-#dayContent {
-  margin-top: 20px;
+
+#appointments button:hover, #appointments button:active {
+  background-color: #c7c7cc;
 }
-#periodEarnings {
-  margin-top: 20px;
+
+/* Заголовок "Доход за период" */
+#periodEarnings h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c2526;
+  margin-bottom: 10px;
+}
+
+/* Адаптивность */
+@media (max-width: 600px) {
+  input, button {
+    width: 100%;
+    margin: 5px 0;
+  }
+  #appointments div {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  #appointments button {
+    width: 100%;
+    margin: 5px 0;
+  }
 }
