@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Massage Scheduler</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Расписание массажистов</h1>
+        <div id="calendar"></div>
+        <div id="schedule" style="display: none;">
+            <h2>Расписание на <span id="selected-date"></span></h2>
+            <div id="slots"></div>
+            <button id="back-to-calendar">Вернуться к календарю</button>
+        </div>
+    </div>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <script type="module" src="script.js"></script>
+</body>
+</html>
