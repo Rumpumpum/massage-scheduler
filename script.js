@@ -19,7 +19,7 @@ let bookings = {};
 
 async function loadBookings() {
     try {
-        const response = await fetch('https://your-app-name.onrender.com/bookings'); // Ваш URL
+        const response = await fetch('https://massage-scheduler-server.onrender.com/bookings'); // Ваш URL
         bookings = await response.json();
         console.log("Bookings loaded:", bookings);
     } catch (error) {
@@ -30,7 +30,7 @@ async function loadBookings() {
 
 async function bookSlot(date, masseur, hour) {
     try {
-        await fetch('https://your-app-name.onrender.com/book', { // Ваш URL
+        await fetch('https://massage-scheduler-server.onrender.com/book', { // Ваш URL
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ date, masseur, hour })
@@ -44,7 +44,7 @@ async function bookSlot(date, masseur, hour) {
 
 async function removeSlot(date, masseur, hour) {
     try {
-        await fetch('https://your-app-name.onrender.com/remove', { // Ваш URL
+        await fetch('https://massage-scheduler-server.onrender.com/remove', { // Ваш URL
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ date, masseur, hour })
