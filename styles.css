@@ -1,56 +1,16 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+  padding: 10px;
 }
-
-.container {
-    max-width: 600px;
-    margin: auto;
+input {
+  margin: 5px;
+  padding: 5px;
 }
-
-#calendar {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-}
-
-.day {
-    padding: 10px;
-    text-align: center;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    cursor: pointer;
-}
-
-.day:hover {
-    background-color: #e0e0e0;
-}
-
-#schedule {
-    margin-top: 20px;
-}
-
-.slot {
-    padding: 10px;
-    margin: 5px 0;
-    background-color: #fff;
-    border: 1px solid #ccc;
-}
-
-.free {
-    background-color: #d4edda;
-}
-
-.busy {
-    background-color: #f8d7da;
-}
-
 button {
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
+  padding: 5px 10px;
+}
+#appointments div {
+  border: 1px solid #ccc;
+  margin: 5px;
+  padding: 5px;
 }
