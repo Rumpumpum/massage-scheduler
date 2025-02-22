@@ -8,9 +8,22 @@ input {
 }
 button {
   padding: 5px 10px;
+  margin: 2px;
 }
 #appointments div {
   border: 1px solid #ccc;
   margin: 5px;
   padding: 5px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+#appointments button {
+  margin-left: 5px;
+}
+#dayContent {
+  margin-top: 20px;
+}
+#periodEarnings {
+  margin-top: 20px;
 }
